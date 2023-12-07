@@ -76,8 +76,8 @@ public class ConnectionServiceImpl implements ConnectionService {
         User receiver = userRepository2.findById(receiverId).get();
         User sender = connect(senderId, receiver.getOriginalCountry().getCountryName().name());
 
-//        if (!sender.getOriginalCountry().equals(receiver.getOriginalCountry()) && !sender.getConnected())
-//            throw new Exception("Cannot establish communication");
+        if (!sender.getOriginalCountry().equals(receiver.getOriginalCountry()) && !sender.getConnected())
+            throw new Exception("Cannot establish communication");
 
         return sender;
     }
