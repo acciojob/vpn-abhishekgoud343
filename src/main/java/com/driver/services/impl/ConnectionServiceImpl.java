@@ -29,7 +29,10 @@ public class ConnectionServiceImpl implements ConnectionService {
             return user;
 
         List<ServiceProvider> serviceProviderList = user.getServiceProviderList();
+        if (serviceProviderList.isEmpty())
+            throw new Exception("Unable to connect");
         serviceProviderList.sort(Comparator.comparingInt(ServiceProvider::getId));
+
         for (ServiceProvider serviceProvider : serviceProviderList)
             for (Country country : serviceProvider.getCountryList())
                 if (country.getCountryName().name().equalsIgnoreCase(countryName)) {
@@ -50,10 +53,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                     return user;
                 }
 
-        if (!user.getConnected())
-            throw new Exception("Unable to connect");
-
-        return user;
+        throw new Exception("Unable to connect");
     }
 
     @Override
@@ -74,11 +74,14 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public User communicate(int senderId, int receiverId) throws Exception {
         User receiver = userRepository2.findById(receiverId).get();
-        User sender = connect(senderId, receiver.getOriginalCountry().getCountryName().name());
+        String receiverIp = receiver.getConnected() ? receiver.getMaskedIp() : receiver.getOriginalIp();
+        String receiverCountry = CountryName.valueOfCode(receiverIp.substring(0, 3)).name();
 
-        if (!sender.getOriginalCountry().equals(receiver.getOriginalCountry()) && !sender.getConnected())
+        try {
+            return connect(senderId, receiverCountry);
+        }
+        catch (Exception e) {
             throw new Exception("Cannot establish communication");
-
-        return sender;
+        }
     }
 }
