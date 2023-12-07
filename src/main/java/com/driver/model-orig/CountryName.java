@@ -1,6 +1,7 @@
 package com.driver.model;
 
 public enum CountryName {
+
     IND("001"),
     USA("002"),
     AUS("003"),
