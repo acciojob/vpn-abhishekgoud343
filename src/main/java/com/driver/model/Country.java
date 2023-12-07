@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private CountryName countryName;
 
@@ -22,7 +22,7 @@ public class Country {
     @JoinColumn
     private ServiceProvider serviceProvider;
 
-    public Country(int id, CountryName countryName, String code, User user, ServiceProvider serviceProvider) {
+    public Country(Integer id, CountryName countryName, String code, User user, ServiceProvider serviceProvider) {
         this.id = id;
         this.countryName = countryName;
         this.code = code;
@@ -33,11 +33,11 @@ public class Country {
     public Country() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
