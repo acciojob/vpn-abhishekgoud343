@@ -17,7 +17,7 @@ public class User {
 
     private String originalIp;
 
-    private String maskedId;
+    private String maskedIp;
 
     private boolean connected;
 
@@ -31,12 +31,12 @@ public class User {
     @JoinColumn
     List<ServiceProvider> serviceProviderList = new ArrayList<>();
 
-    public User(Integer id, String username, String password, String originalIp, String maskedId, boolean connected, Country originalCountry, List<Connection> connectionList, List<ServiceProvider> serviceProviderList) {
+    public User(Integer id, String username, String password, String originalIp, String maskedIp, boolean connected, Country originalCountry, List<Connection> connectionList, List<ServiceProvider> serviceProviderList) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.originalIp = originalIp;
-        this.maskedId = maskedId;
+        this.maskedIp = maskedIp;
         this.connected = connected;
         this.originalCountry = originalCountry;
         this.connectionList = connectionList;
@@ -78,12 +78,12 @@ public class User {
         this.originalIp = originalIp;
     }
 
-    public String getMaskedId() {
-        return maskedId;
+    public String getMaskedIp() {
+        return maskedIp;
     }
 
-    public void setMaskedId(String maskedId) {
-        this.maskedId = maskedId;
+    public void setMaskedIp(String maskedIp) {
+        this.maskedIp = maskedIp;
     }
 
     public boolean getConnected() {
