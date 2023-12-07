@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     private String username;
 
@@ -18,7 +18,7 @@ public class Admin {
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
     private List<ServiceProvider> serviceProviders = new ArrayList<>();
 
-    public Admin(Integer id, String username, String password, List<ServiceProvider> serviceProviders) {
+    public Admin(int id, String username, String password, List<ServiceProvider> serviceProviders) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -28,11 +28,11 @@ public class Admin {
     public Admin() {
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

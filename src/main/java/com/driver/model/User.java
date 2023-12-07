@@ -9,7 +9,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     private String username;
 
@@ -19,7 +19,7 @@ public class User {
 
     private String maskedIp;
 
-    private Boolean connected = false;
+    private boolean connected;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Country originalCountry;
@@ -34,7 +34,7 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, String username, String password, String originalIp, String maskedIp, Boolean connected, Country originalCountry, List<Connection> connectionList, List<ServiceProvider> serviceProviderList) {
+    public User(int id, String username, String password, String originalIp, String maskedIp, boolean connected, Country originalCountry, List<Connection> connectionList, List<ServiceProvider> serviceProviderList) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -46,11 +46,11 @@ public class User {
         this.serviceProviderList = serviceProviderList;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -86,11 +86,11 @@ public class User {
         this.maskedIp = maskedIp;
     }
 
-    public Boolean getConnected() {
+    public boolean getConnected() {
         return connected;
     }
 
-    public void setConnected(Boolean connected) {
+    public void setConnected(boolean connected) {
         this.connected = connected;
     }
 
