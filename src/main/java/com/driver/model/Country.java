@@ -5,37 +5,40 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "country")
-
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer countryId;
+    private Integer id;
+
     private CountryName countryName;
+
     private String code;
-    @JoinColumn
+
     @OneToOne
-    private User user;
     @JoinColumn
+    private User user;
+
     @ManyToOne
+    @JoinColumn
     private ServiceProvider serviceProvider;
 
-    public Country() {
-    }
-
-    public Country(Integer countryId, CountryName countryName, String code, User user, ServiceProvider serviceProvider) {
-        this.countryId = countryId;
+    public Country(Integer id, CountryName countryName, String code, User user, ServiceProvider serviceProvider) {
+        this.id = id;
         this.countryName = countryName;
         this.code = code;
         this.user = user;
         this.serviceProvider = serviceProvider;
     }
 
-    public Integer getCountryId() {
-        return countryId;
+    public Country() {
     }
 
-    public void setCountryId(Integer countryId) {
-        this.countryId = countryId;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public CountryName getCountryName() {
