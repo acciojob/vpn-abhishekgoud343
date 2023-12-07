@@ -21,23 +21,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(String username, String password, String countryName) throws Exception {
         Country country = new Country();
-        for (CountryName cn : CountryName.values())
-            if (cn.name().equalsIgnoreCase(countryName)) {
-                country.setCountryName(cn);
-                country.setCode(cn.toCode());
-            }
-        if (country.getCountryName() == null)
+        try {
+            country.setCountryName(CountryName.valueOf(countryName.toUpperCase()));
+            country.setCode(country.getCountryName().toCode());
+        }
+        catch (IllegalArgumentException ignored) {
             throw new Exception("Country not found");
+        }
 
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
         user.setOriginalCountry(country);
+        user.setOriginalIp(country.getCode() + "." + user.getId());
 
         country.setUser(user);
-        countryRepository3.save(country);
 
-        user.setOriginalIp(country.getCode() + "." + user.getId());
         userRepository3.save(user);
 
         return user;
