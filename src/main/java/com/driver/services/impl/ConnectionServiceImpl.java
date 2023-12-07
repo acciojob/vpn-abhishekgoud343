@@ -43,6 +43,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
                     user.getConnectionList().add(connection);
                     user.setConnected(true);
+                    user.setCountry(country);
                     user.setMaskedIp(country.getCode() + "." + serviceProvider.getId() + "." + user.getId());
                     break;
                 }
