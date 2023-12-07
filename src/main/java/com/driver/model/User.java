@@ -1,7 +1,8 @@
 package com.driver.model;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -27,9 +28,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Connection> connectionList = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn
-    private Country country;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Country originalCountry;
 
     public User(Integer id, String username, String password, String originalIp, String maskedIp, boolean connected, List<ServiceProvider> serviceProviderList, List<Connection> connectionList, Country country) {
         this.id = id;
@@ -40,7 +40,7 @@ public class User {
         this.connected = connected;
         this.serviceProviderList = serviceProviderList;
         this.connectionList = connectionList;
-        this.country = country;
+        this.originalCountry = country;
     }
 
     public User() {
@@ -111,18 +111,10 @@ public class User {
     }
 
     public Country getOriginalCountry() {
-        return country;
+        return originalCountry;
     }
 
     public void setOriginalCountry(Country country) {
-        this.country = country;
-    }
-
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
+        this.originalCountry = country;
     }
 }

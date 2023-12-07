@@ -1,7 +1,6 @@
 package com.driver.services.impl;
 
 import com.driver.model.*;
-import com.driver.repository.ConnectionRepository;
 import com.driver.repository.ServiceProviderRepository;
 import com.driver.repository.UserRepository;
 import com.driver.services.ConnectionService;
@@ -14,11 +13,10 @@ import java.util.List;
 @Service
 public class ConnectionServiceImpl implements ConnectionService {
     @Autowired
-    UserRepository userRepository2;
-    @Autowired
     ServiceProviderRepository serviceProviderRepository2;
+
     @Autowired
-    ConnectionRepository connectionRepository2;
+    UserRepository userRepository2;
 
     @Override
     public User connect(int userId, String countryName) throws Exception {
@@ -27,7 +25,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         if (user.getConnected())
             throw new Exception("Already connected");
 
-        if (user.getCountry().getCountryName().name().equalsIgnoreCase(countryName))
+        if (user.getOriginalCountry().getCountryName().name().equalsIgnoreCase(countryName))
             return user;
 
         List<ServiceProvider> serviceProviderList = user.getServiceProviderList();
@@ -43,8 +41,12 @@ public class ConnectionServiceImpl implements ConnectionService {
 
                     user.getConnectionList().add(connection);
                     user.setConnected(true);
-                    user.setCountry(country);
                     user.setMaskedIp(country.getCode() + "." + serviceProvider.getId() + "." + user.getId());
+
+                    serviceProviderRepository2.save(serviceProvider);
+
+                    userRepository2.save(user);
+
                     break;
                 }
 
@@ -64,15 +66,17 @@ public class ConnectionServiceImpl implements ConnectionService {
         user.setConnected(false);
         user.setMaskedIp(null);
 
-        return userRepository2.save(user);
+        userRepository2.save(user);
+
+        return user;
     }
 
     @Override
     public User communicate(int senderId, int receiverId) throws Exception {
         User receiver = userRepository2.findById(receiverId).get();
-        User sender = connect(senderId, receiver.getCountry().getCountryName().name());
+        User sender = connect(senderId, receiver.getOriginalCountry().getCountryName().name());
 
-        if (!sender.getCountry().getCode().equalsIgnoreCase(receiver.getCountry().getCode()))
+        if (!sender.getOriginalCountry().equals(receiver.getOriginalCountry()) && !sender.getConnected())
             throw new Exception("Cannot establish communication");
 
         return sender;
