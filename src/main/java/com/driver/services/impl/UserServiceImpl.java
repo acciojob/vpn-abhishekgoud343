@@ -1,7 +1,6 @@
 package com.driver.services.impl;
 
 import com.driver.model.*;
-import com.driver.repository.CountryRepository;
 import com.driver.repository.ServiceProviderRepository;
 import com.driver.repository.UserRepository;
 import com.driver.services.UserService;
@@ -17,12 +16,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     ServiceProviderRepository serviceProviderRepository3;
 
-    @Autowired
-    private CountryRepository countryRepository3;
-
     @Override
     public User register(String username, String password, String countryName) throws Exception {
         Country country = new Country();
+
         try {
             country.setCountryName(CountryName.valueOf(countryName.toUpperCase()));
             country.setCode(country.getCountryName().toCode());
@@ -35,11 +32,8 @@ public class UserServiceImpl implements UserService {
         user.setUsername(username);
         user.setPassword(password);
         user.setOriginalCountry(country);
-
-        country.setUser(user);
-        countryRepository3.save(country);
-
         user.setOriginalIp(country.getCode() + "." + user.getId());
+
         userRepository3.save(user);
 
         return user;
