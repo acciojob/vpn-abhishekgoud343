@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(String username, String password, String countryName) throws Exception {
         User user = new User();
-        user.setUserName(username);
+        user.setUsername(username);
         user.setPassword(password);
 
         Country country = new Country();
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         if (country.getCountryName() == null)
             throw new Exception("Country not found");
 
-        user.setCountry(country);
+        user.setOriginalCountry(country);
 
         country.setUser(user);
         countryRepository3.save(country);
