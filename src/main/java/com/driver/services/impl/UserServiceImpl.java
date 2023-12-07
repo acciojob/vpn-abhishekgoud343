@@ -20,39 +20,39 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(String username, String password, String countryName) throws Exception {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-
         Country country = new Country();
         for (CountryName cn : CountryName.values())
             if (cn.name().equalsIgnoreCase(countryName)) {
                 country.setCountryName(cn);
                 country.setCode(cn.toCode());
             }
-
         if (country.getCountryName() == null)
             throw new Exception("Country not found");
 
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
         user.setOriginalCountry(country);
 
         country.setUser(user);
         countryRepository3.save(country);
 
         user.setOriginalIp(country.getCode() + "." + user.getId());
+        userRepository3.save(user);
 
-        return userRepository3.save(user);
+        return user;
     }
 
     @Override
     public User subscribe(Integer userId, Integer serviceProviderId) {
         User user = userRepository3.findById(userId).get();
-
         ServiceProvider serviceProvider = serviceProviderRepository3.findById(serviceProviderId).get();
-        serviceProvider.getUsers().add(user);
 
         user.getServiceProviderList().add(serviceProvider);
+        serviceProvider.getUsers().add(user);
 
-        return userRepository3.save(user);
+        serviceProviderRepository3.save(serviceProvider);
+
+        return user;
     }
 }
